@@ -37,7 +37,7 @@ export const ChaptersIntro: React.FC<ChaptersIntroProps> = ({ onBackToPage2 }) =
           </span>
           <span className="w-1 h-1 rounded-full bg-pink-400/60" />
           <span className="font-serif italic text-xs sm:text-sm text-pink-300 whitespace-nowrap">
-            Her Chapters
+            Every Version of You
           </span>
         </div>
       </motion.div>

@@ -15,6 +15,11 @@ export const birthdayConfig = {
     date: '17 August',
   },
 
+  birthdayDate: {
+    day: 17,
+    month: 8,
+  },
+
   relationship: {
     type: 'special person',
     yearsKnown: 4,
@@ -37,6 +42,53 @@ export const birthdayConfig = {
     line2: 'Because today is a little more special than usual.',
     dateBadge: '17 August ✨',
     buttonText: 'Open Your Surprise 💝',
+    hintButtonText: 'A Little Hint ℹ️',
+    hintModal: {
+      title: 'A Little Hint ✨',
+      leadText: "Before you can open your surprise, there's one little thing you need to know... 👀",
+      question: "What's the special date?",
+      hint: "Hint: It's the day this beautiful person was born. ❤️",
+      closeButtonText: 'Got it ✨',
+    },
+    dateUnlock: {
+      heading: 'First, tell me the special date 🎂',
+      supportingText: 'Enter the date that makes today special.',
+      placeholder: 'DD - MM',
+      checkButtonText: 'Check Date ✨',
+      successMessage: 'That’s it! You got the date right. ❤️',
+      successSubtext: 'Your surprise is ready... ✨',
+      unlockedButtonText: 'Open Your Surprise 💝',
+      wrongMessages: [
+        'Nope 😜 Try again.',
+        'Hmm... that’s not the date I’m looking for 😜',
+        'You’re close... maybe? 👀',
+        'I know you know this one 😂',
+        'Think carefully, Bujjama! 🎂',
+      ],
+      teaseMessages: [
+        'Hehe... catch me 😜',
+        'Almost! 😂',
+        'Not that easy... 👀',
+        'Tell me the date first! 🎂',
+        'You can’t catch me 😜',
+      ],
+    },
+    playfulButton: {
+      initialText: 'Open Your Surprise 💝',
+      lockedTeaseTexts: [
+        'Catch Me 😜',
+        'Almost! 😂',
+        'Not Yet! 😜',
+        'Tell me the date 🎂',
+        'Too slow! 🏃‍♂️',
+      ],
+      unlockedText: 'Open Your Surprise 💝',
+    },
+    flowerTransition: {
+      line1: 'A little something beautiful...',
+      line2: 'Just for you, Bujjama. ❤️',
+      readyText: 'Ready? ✨',
+    },
   },
 
   // Page 2 - Happy Birthday Bujjama
@@ -51,10 +103,10 @@ export const birthdayConfig = {
     continueButtonText: "Bujjama's Journey →",
   },
 
-  // Page 3 - Bujjama's Beautiful Chapters (Symbolic, NO photos)
+  // Page 3 - Every Version of You (Symbolic, NO photos)
   page3: {
     introSmallText: 'A journey through time...',
-    introHeading: "Bujjama's Beautiful Chapters ✨",
+    introHeading: 'Every Version of You',
     introSubtext: 'Every step, every smile, and every moment that shaped who you are today.',
     chapters: [
       {

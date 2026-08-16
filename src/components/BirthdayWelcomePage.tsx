@@ -1,30 +1,36 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { Sparkles, ArrowRight, Heart } from 'lucide-react';
+import { Sparkles, Info } from 'lucide-react';
 import { birthdayConfig } from '../config/birthdayConfig';
 import { RomanticBackgroundCanvas } from './RomanticBackgroundCanvas';
 import { RomanticAudioPlayer } from './RomanticAudioPlayer';
+import { PlayfulSurpriseButton } from './PlayfulSurpriseButton';
+import { BirthdayDateInput } from './BirthdayDateInput';
+import { BirthdayHintModal } from './BirthdayHintModal';
+import { FlowerTransition } from './FlowerTransition';
 
 interface BirthdayWelcomePageProps {
   onEnterPage2: () => void;
 }
 
 export const BirthdayWelcomePage: React.FC<BirthdayWelcomePageProps> = ({ onEnterPage2 }) => {
-  const [clickSparkles, setClickSparkles] = useState<Array<{ id: number; x: number; y: number }>>([]);
+  const [isHintOpen, setIsHintOpen] = useState<boolean>(false);
+  const [dateUnlocked, setDateUnlocked] = useState<boolean>(false);
+  const [latestTeaseMessage, setLatestTeaseMessage] = useState<string>('');
+  const [isFlowerTransitioning, setIsFlowerTransitioning] = useState<boolean>(false);
 
-  const handleOpenSurprise = (e: React.MouseEvent<HTMLButtonElement | HTMLDivElement>) => {
-    e.stopPropagation();
+  const handleDateUnlock = () => {
+    setDateUnlocked(true);
+    setLatestTeaseMessage('That’s it! You got the date right. ❤️');
+  };
 
-    // Generate soft sparkle burst coordinates
-    const newSparkles = Array.from({ length: 12 }).map((_, i) => ({
-      id: Date.now() + i,
-      x: (Math.random() - 0.5) * 140,
-      y: (Math.random() - 0.5) * 100,
-    }));
-    setClickSparkles(newSparkles);
+  const handleWrongAttempt = (msg: string) => {
+    setLatestTeaseMessage(msg);
+  };
 
-    // Directly open Page 2
-    onEnterPage2();
+  const handleStartTransition = () => {
+    if (!dateUnlocked || isFlowerTransitioning) return;
+    setIsFlowerTransitioning(true);
   };
 
   return (
@@ -70,7 +76,7 @@ export const BirthdayWelcomePage: React.FC<BirthdayWelcomePageProps> = ({ onEnte
       </motion.header>
 
       {/* Main Container */}
-      <div className="relative z-10 w-full max-w-xl px-2 sm:px-6 flex flex-col items-center justify-center my-auto py-8 sm:py-12 text-center">
+      <div className="relative z-10 w-full max-w-xl px-2 sm:px-6 flex flex-col items-center justify-center my-auto py-6 sm:py-8 text-center">
         <motion.div
           initial="hidden"
           animate="visible"
@@ -79,8 +85,8 @@ export const BirthdayWelcomePage: React.FC<BirthdayWelcomePageProps> = ({ onEnte
             visible: {
               opacity: 1,
               transition: {
-                staggerChildren: 0.18,
-                delayChildren: 0.2,
+                staggerChildren: 0.15,
+                delayChildren: 0.15,
               },
             },
           }}
@@ -97,7 +103,7 @@ export const BirthdayWelcomePage: React.FC<BirthdayWelcomePageProps> = ({ onEnte
                 transition: { duration: 1.1, ease: [0.16, 1, 0.3, 1] },
               },
             }}
-            className="relative mb-4 sm:mb-6"
+            className="relative mb-3 sm:mb-4"
           >
             {/* Ambient subtle heart halo behind name */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 sm:w-72 h-20 sm:h-28 bg-pink-500/20 rounded-full blur-2xl pointer-events-none -z-10 animate-subtle-pulse" />
@@ -123,7 +129,7 @@ export const BirthdayWelcomePage: React.FC<BirthdayWelcomePageProps> = ({ onEnte
                 transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] },
               },
             }}
-            className="mb-3 max-w-md"
+            className="mb-2 max-w-md"
           >
             <p className="text-lg sm:text-2xl text-slate-200 font-serif italic font-light tracking-wide">
               "{birthdayConfig.page1.line1}"
@@ -139,14 +145,14 @@ export const BirthdayWelcomePage: React.FC<BirthdayWelcomePageProps> = ({ onEnte
                 transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] },
               },
             }}
-            className="mb-6 sm:mb-8 max-w-md"
+            className="mb-4 sm:mb-5 max-w-md"
           >
             <p className="text-sm sm:text-base text-pink-200/80 font-sans font-light leading-relaxed">
               {birthdayConfig.page1.line2}
             </p>
           </motion.div>
 
-          {/* 3. Date Badge: "17 August ✨" with floating animation */}
+          {/* 3. Small Information Button: "A Little Hint ℹ️" */}
           <motion.div
             variants={{
               hidden: { opacity: 0, scale: 0.9 },
@@ -156,17 +162,41 @@ export const BirthdayWelcomePage: React.FC<BirthdayWelcomePageProps> = ({ onEnte
                 transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
               },
             }}
-            className="mb-8 sm:mb-10 animate-float"
+            className="mb-6 animate-float"
           >
-            <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-gradient-to-r from-pink-500/25 via-purple-500/20 to-pink-500/25 border border-pink-400/50 backdrop-blur-md shadow-[0_0_25px_rgba(236,72,153,0.35)] hover:border-pink-300 transition-colors">
-              <Sparkles className="w-4 h-4 text-amber-300 animate-pulse" />
-              <span className="font-serif text-base sm:text-lg text-pink-100 font-medium tracking-wider">
-                {birthdayConfig.page1.dateBadge}
+            <button
+              type="button"
+              id="birthday-hint-button"
+              onClick={() => setIsHintOpen(true)}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-pink-500/20 via-purple-500/15 to-pink-500/20 border border-pink-400/40 hover:border-pink-300 backdrop-blur-md shadow-[0_0_20px_rgba(236,72,153,0.25)] hover:shadow-[0_0_30px_rgba(236,72,153,0.45)] transition-all cursor-pointer group"
+            >
+              <Info className="w-3.5 h-3.5 text-pink-300 group-hover:scale-110 transition-transform" />
+              <span className="font-serif text-xs sm:text-sm text-pink-100 font-medium tracking-wide">
+                {birthdayConfig.page1.hintButtonText}
               </span>
-            </div>
+            </button>
           </motion.div>
 
-          {/* 4. Action Button: "Open Your Surprise 💝" */}
+          {/* 4. Birthday Date Input Section */}
+          <motion.div
+            variants={{
+              hidden: { opacity: 0, y: 15 },
+              visible: {
+                opacity: 1,
+                y: 0,
+                transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] },
+              },
+            }}
+            className="w-full flex justify-center z-10"
+          >
+            <BirthdayDateInput
+              isUnlocked={dateUnlocked}
+              onUnlock={handleDateUnlock}
+              onWrongAttempt={handleWrongAttempt}
+            />
+          </motion.div>
+
+          {/* 5. Playful Action Button: Runaway interaction with "Open Your Surprise 💝" */}
           <motion.div
             variants={{
               hidden: { opacity: 0, scale: 0.9, y: 15 },
@@ -177,50 +207,40 @@ export const BirthdayWelcomePage: React.FC<BirthdayWelcomePageProps> = ({ onEnte
                 transition: { duration: 0.9, ease: [0.34, 1.56, 0.64, 1] },
               },
             }}
-            className="relative group w-full sm:w-auto flex justify-center z-20"
+            className="w-full flex justify-center z-20"
           >
-            <div className="absolute -inset-1.5 bg-gradient-to-r from-pink-600 via-purple-600 to-rose-600 rounded-full blur-md opacity-50 group-hover:opacity-95 transition-opacity duration-300 pointer-events-none animate-glow-pulse" />
-
-            <motion.button
-              type="button"
-              onClick={handleOpenSurprise}
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.96 }}
-              className="relative z-10 w-full sm:w-auto min-h-[52px] sm:min-h-[58px] px-9 sm:px-12 py-3.5 sm:py-4 bg-gradient-to-r from-pink-600/50 via-purple-600/40 to-pink-600/50 border border-pink-400/60 hover:border-pink-300 rounded-full backdrop-blur-xl transition-all duration-300 shadow-[0_0_35px_rgba(236,72,153,0.4)] hover:shadow-[0_0_55px_rgba(236,72,153,0.7)] cursor-pointer overflow-hidden flex items-center justify-center gap-3 active:scale-95"
-            >
-              <span className="relative z-10 text-sm sm:text-base font-medium tracking-wider text-pink-50 uppercase flex items-center gap-2 whitespace-nowrap">
-                {birthdayConfig.page1.buttonText}
-              </span>
-              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-pink-200 group-hover:translate-x-1.5 transition-transform shrink-0" />
-            </motion.button>
-
-            {/* Click Sparkles */}
-            {clickSparkles.map((sp) => (
-              <motion.span
-                key={sp.id}
-                initial={{ opacity: 1, scale: 0, x: 0, y: 0 }}
-                animate={{ opacity: 0, scale: 1.8, x: sp.x, y: sp.y }}
-                transition={{ duration: 0.75, ease: 'easeOut' }}
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none text-pink-300 text-lg"
-              >
-                ✨
-              </motion.span>
-            ))}
+            <PlayfulSurpriseButton
+              isUnlocked={dateUnlocked}
+              onOpenSurprise={handleStartTransition}
+              externalTease={latestTeaseMessage}
+              disabled={isFlowerTransitioning}
+            />
           </motion.div>
         </motion.div>
       </div>
+
+      {/* Hint Modal */}
+      <BirthdayHintModal
+        isOpen={isHintOpen}
+        onClose={() => setIsHintOpen(false)}
+      />
+
+      {/* Cinematic Flower Bloom Transition Overlay */}
+      {isFlowerTransitioning && (
+        <FlowerTransition onComplete={onEnterPage2} />
+      )}
 
       {/* Bottom Hint */}
       <motion.footer
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.0, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        onClick={onEnterPage2}
-        className="pt-4 pb-2 z-10 flex flex-col items-center text-slate-400/70 hover:text-pink-300 transition-colors cursor-pointer"
-        title="Tap to continue"
+        onClick={dateUnlocked ? handleStartTransition : () => setIsHintOpen(true)}
+        className="pt-2 pb-2 z-10 flex flex-col items-center text-slate-400/70 hover:text-pink-300 transition-colors cursor-pointer"
+        title="Tap for a hint or continue"
       >
         <span className="text-[10px] sm:text-xs uppercase tracking-[0.3em] mb-1.5 text-center">
-          A special journey awaits
+          {dateUnlocked ? 'Your surprise is ready' : 'Enter the special date to unlock'}
         </span>
         <svg className="w-4 h-4 text-pink-400/80 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
