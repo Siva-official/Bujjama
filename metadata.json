@@ -1,0 +1,6 @@
+{
+  "name": "Birthday Surprise for Bujjama",
+  "description": "A cinematic and heartfelt 7-page personal birthday website created by Siva for Bujjama, featuring interactive story chapters, personal photo memories, things I appreciate, a personal letter, interactive cake & candles, and birthday celebrations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

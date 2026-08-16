@@ -1,0 +1,205 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-serif: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+    --font-display: 'Cinzel', 'Playfair Display', serif;
+    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-script: 'Alex Brush', cursive;
+  }
+}
+
+.font-serif-romantic {
+  font-family: var(--font-serif);
+}
+
+.font-display-cinzel {
+  font-family: var(--font-display);
+}
+
+.font-sans-modern {
+  font-family: var(--font-sans);
+}
+
+.font-script-romantic {
+  font-family: var(--font-script);
+}
+
+/* Atmospheric / Immersive Media background layer */
+.atmosphere {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 30%, #3a1510 0%, transparent 60%),
+              radial-gradient(circle at 10% 80%, #ff4e00 0%, transparent 50%),
+              radial-gradient(circle at 90% 10%, #6d28d9 0%, transparent 40%);
+  filter: blur(80px);
+  opacity: 0.65;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.heart-shape-ambient {
+  position: absolute;
+  color: rgba(236, 72, 153, 0.12);
+  font-size: clamp(240px, 35vw, 420px);
+  transform: rotate(-15deg);
+  z-index: 1;
+  top: 8%;
+  left: 8%;
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 0 35px rgba(236, 72, 153, 0.15));
+}
+
+.glass-card-immersive {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 40px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6),
+              inset 0 1px 1px rgba(255, 255, 255, 0.15);
+}
+
+.glass-button-immersive {
+  background: linear-gradient(
+    135deg,
+    rgba(236, 72, 153, 0.2) 0%,
+    rgba(168, 85, 247, 0.2) 100%
+  );
+  border: 1px solid rgba(244, 114, 182, 0.35);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-button-immersive:hover {
+  border-color: rgba(244, 114, 182, 0.85);
+  box-shadow: 0 0 45px rgba(236, 72, 153, 0.45),
+              0 0 80px rgba(109, 40, 217, 0.25),
+              inset 0 1px 2px rgba(255, 255, 255, 0.3);
+}
+
+/* Custom cinematic glow animations */
+@keyframes subtle-pulse {
+  0%, 100% {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.04);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes float-slow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(2deg);
+  }
+}
+
+@keyframes float-reverse {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(10px) rotate(-2deg);
+  }
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(236, 72, 153, 0.3), inset 0 0 15px rgba(236, 72, 153, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 45px rgba(236, 72, 153, 0.65), inset 0 0 25px rgba(236, 72, 153, 0.25);
+  }
+}
+
+@keyframes beam-flow {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(200%);
+  }
+}
+
+@keyframes heart-beat-subtle {
+  0%, 100% {
+    transform: scale(1);
+  }
+  14% {
+    transform: scale(1.18);
+  }
+  28% {
+    transform: scale(1);
+  }
+  42% {
+    transform: scale(1.12);
+  }
+  70% {
+    transform: scale(1);
+  }
+}
+
+.animate-subtle-pulse {
+  animation: subtle-pulse 7s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float-slow 5s ease-in-out infinite;
+}
+
+.animate-float-reverse {
+  animation: float-reverse 6s ease-in-out infinite;
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 3s ease-in-out infinite;
+}
+
+.animate-heart-beat {
+  animation: heart-beat-subtle 2.5s ease-in-out infinite;
+}
+
+.animate-beam {
+  animation: beam-flow 3.5s linear infinite;
+}
+
+.text-shimmer {
+  background: linear-gradient(
+    90deg,
+    #ffc0cb 0%,
+    #ffffff 25%,
+    #f472b6 50%,
+    #ffffff 75%,
+    #ffc0cb 100%
+  );
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: shimmer 7s linear infinite;
+}
+
+.glass-panel {
+  background: rgba(18, 10, 28, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(244, 114, 182, 0.15);
+}
+
